@@ -74,6 +74,8 @@
 <script>
 import { HomeOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons-vue'
 import router from '@/router'
+import store from '@/store'
+import axios from 'axios'
 
 export default {
   name: 'Homepage',
@@ -82,13 +84,41 @@ export default {
       theme: 'light',
       selectedKeys: ['3'],
       selectedItem: Number,
-      searchString: String
+      searchString: '',
+
+      customer: {
+        id: '',
+        roleName: 'customer',
+        username: '',
+
+        lastname: '',
+        firstname: '',
+        idCard: '',
+        phone: '',
+        email: '',
+        nickname: '',
+        bankCardNumber: '',
+        password: ''
+      }
     }
   },
   components: {
     HomeOutlined,
     ShoppingCartOutlined,
     UserOutlined
+  },
+  created () {
+    this.customer.username = store.state.username
+    console.log(store.state.username)
+    axios.get('/api/customer?username=' + this.customer.username).then(response => {
+      const result = response.data
+      console.log('返回值为')
+      console.log(result)
+      this.customer.id = result.id
+      this.customer.phone = result.phone
+    }).catch(error => {
+      console.log(error)
+    })
   },
   methods: {
     changeTheme (checked) {
