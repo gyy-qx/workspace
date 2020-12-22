@@ -110,7 +110,7 @@ export default {
   created () {
     this.customer.username = store.state.username
     console.log(store.state.username)
-    axios.get('/api/customer?username=' + this.customer.username).then(response => {
+    axios.get('/api/customer/username/' + this.customer.username).then(response => {
       const result = response.data
       console.log('返回值为')
       console.log(result)
