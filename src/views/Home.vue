@@ -7,7 +7,7 @@
     <img alt="Vue logo" src="../assets/peach.png">
     <h1>{{ msg }}</h1>
     <a-space size="middle">
-      <router-link to="/signUp">
+      <router-link to="/userSignUp">
         <a-button type="link">去注册</a-button>
       </router-link>
       <router-link to="/signIn">
