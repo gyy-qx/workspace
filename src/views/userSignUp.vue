@@ -1,80 +1,42 @@
 <template>
   <h1>桃饱网 <span>用户注册</span>  </h1>
   <div id="usersignUp">
-      <a-row :gutter="[8,24]">
-        <a-col :span="8"/>
-        <label>
-          <a-input prefix="用户名" v-model:value="customerRegisterVo.username" size="default"></a-input>
-        </label>
-        <a-col :span="8"/>
-      </a-row>
-      <a-row :gutter="[8,24]">
-        <a-col :span="8"/>
-        <label>
-          <a-input prefix="昵称" v-model:value="customerRegisterVo.nickname" size="default"></a-input>
-        </label>
-        <a-col :span="8"/>
-      </a-row>
-      <a-row :gutter="[8,24]">
-        <a-col :span="8"/>
-        <label>
-          <a-input prefix="姓" v-model:value="customerRegisterVo.lastname" size="default"></a-input>
-        </label>
-        <a-col :span="8"/>
-      </a-row>
-      <a-row :gutter="[8,24]">
-        <a-col :span="8"/>
-        <label>
-          <a-input prefix="名" v-model:value="customerRegisterVo.firstname" size="default"></a-input>
-        </label>
-        <a-col :span="8"/>
-      </a-row>
-      <a-row :gutter="[8,24]">
-        <a-col :span="8"/>
-        <label>
-          <a-input prefix="身份证号码" v-model:value="customerRegisterVo.idCard" size="default"></a-input>
-        </label>
-        <a-col :span="8"/>
-      </a-row>
-      <a-row :gutter="[8,24]">
-        <a-col :span="8"/>
-        <label>
-          <a-input prefix="联系方式" v-model:value="customerRegisterVo.phone" size="default"></a-input>
-        </label>
-        <a-col :span="8"/>
-      </a-row>
-      <a-row :gutter="[8,24]">
-        <a-col :span="8"/>
-        <label>
-          <a-input prefix="邮箱" v-model:value="customerRegisterVo.email" size="default"></a-input>
-        </label>
-        <a-col :span="8"/>
-      </a-row>
-      <a-row :gutter="[8,24]">
-        <a-col :span="8"/>
-        <label>
-          <a-input prefix="银行卡号" v-model:value="customerRegisterVo.bankCardNumber" size="default"></a-input>
-        </label>
-        <a-col :span="8"/>
-      </a-row>
-      <a-row :gutter="[8,24]">
-        <a-col :span="8"/>
-        <label>
-          <a-input prefix="余额" v-model:value="customerRegisterVo.balance" size="default"></a-input>
-        </label>
-        <a-col :span="8"/>
-      </a-row>
-      <a-row :gutter="[8,24]">
-        <a-col :span="8"/>
-        <label>
-          <a-input-password prefix="密码" v-model:value="customerRegisterVo.password" size="default"></a-input-password>
-        </label>
-        <a-col :span="8"/>
-      </a-row>
+    <p class="first" style="margin-top: 120px"><span>*</span>基本信息</p>
+    <p class="sec">
+      <span>用户名</span><input type="text" placeholder="会员名" v-model="customerRegisterVo.username">
+    </p>
+      <p class="sec">
+        <span>昵称</span><input type="text" placeholder="设置你的昵称" v-model="customerRegisterVo.nickname">
+      </p>
+      <p class="sec">
+        <span>姓</span><input type="text" placeholder="" v-model="customerRegisterVo.lastname">
+      </p>
+      <p class="sec">
+        <span>名</span><input type="text" v-model="customerRegisterVo.firstname">
+      </p>
+      <p class="sec">
+        <span>身份证号码</span><input type="text" placeholder="请输入身份证号码" v-model="customerRegisterVo.idCard">
+      </p>
+    <p class="sec">
+      <span>联系方式</span><input type="text" placeholder="请输入电话号码" v-model="customerRegisterVo.phone">
+    </p>
+    <p class="sec">
+      <span>邮箱</span><input type="text" placeholder="请输入邮箱" v-model="customerRegisterVo.email">
+    </p>
+    <p class="first"><span>*</span>银行卡信息</p>
+    <p class="sec">
+      <span>银行卡号</span><input type="text" placeholder="请输入银行卡号" v-model="customerRegisterVo.bankCardNumber">
+    </p>
+    <p class="sec">
+      <span>余额</span><input type="text" placeholder="请输入银行余额" v-model="customerRegisterVo.balance">
+    </p>
+    <p class="first"><span>*</span>请设置登录密码</p>
+    <p class="sec">
+      <span>密码</span><input type="text" placeholder="设置你的密码" v-model="customerRegisterVo.password">
+    </p>
     </div>
     <input type="button" @click="register" id="login" value="注  册">
-    <input type="button" value="切换为企业注册" id="regist" @click="jumpRegistration" size="large">
-  </div>
+    <input type="button" value="切换为企业注册" id="resve" @click="jumpRegistration">
 </template>
 
 <script>
@@ -162,5 +124,16 @@ export default {
     border: none;
     box-shadow: #1a1e21;
     border-radius: 10px;
+  }
+  #resve{
+    text-decoration: none;
+    border: none;
+    color: #ff8135;
+    margin-top: 20px;
+    margin-right: -70px;
+    background-color: white;
+  }
+  input::-webkit-input-placeholder{
+    font-size: 8px;
   }
 </style>
