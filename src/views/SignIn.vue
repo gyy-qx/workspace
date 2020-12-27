@@ -1,5 +1,5 @@
 <template>
-  <h1>桃饱网</h1>
+  <h1>桃饱网 <span>登录</span> </h1>
   <div id="signIn">
     <div id="login">
 <!--    <a-row :gutter="[8,16]">-->
@@ -99,7 +99,7 @@ export default {
           alert('登录成功')
           store.commit('setUsername', this.user.username)
           if (this.role === 'customer') {
-            this.$router.push('/homepage')
+            this.$router.push('/Homepage')
           } else if (this.role === 'business') {
             this.$router.push('/merchantHomepage')
           }
@@ -136,7 +136,7 @@ export default {
         })
     },
     jumpRegistration: function () {
-      router.push('/usersignUp')
+      router.push('/userSignUp')
     }
   }
 }
@@ -153,6 +153,10 @@ export default {
     font-family: 幼圆;
     font-size: 40px;
     color: lightcoral;
+  }
+  h1 span{
+    font-size: 30px;
+    color:#41464b;
   }
 #signIn {
   width: 100%;

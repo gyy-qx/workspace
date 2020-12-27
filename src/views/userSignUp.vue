@@ -49,12 +49,12 @@ export default {
       customerRegisterVo: {
         roleName: this.role,
         username: null,
+        nickname: null,
         lastname: null,
         firstname: null,
         idCard: null,
         phone: null,
         email: null,
-        nickname: null,
         bankCardNumber: null,
         balance: null,
         password: null
@@ -63,7 +63,30 @@ export default {
   },
   methods: {
     customerRegister: function () {
-
+      this.axios({
+        method: 'post',
+        url: 'api/customerRegister',
+        data: {
+          roleName: 'customer',
+          username: this.customerRegisterVo.username,
+          nickname: this.customerRegisterVo.nickname,
+          lastname: this.customerRegisterVo.lastname,
+          firstname: this.customerRegisterVo.firstname,
+          idCard: this.customerRegisterVo.idCard,
+          phone: this.customerRegisterVo.phone,
+          email: this.customerRegisterVo.email,
+          bankCardNumber: this.customerRegisterVo.bankCardNumber,
+          balance: this.customerRegisterVo.balance,
+          password: this.customerRegisterVo.password
+        },
+        headers: {
+          token: this.token // 将token放在请求头带到后端
+        }
+      }).then(res => {
+        if (res.data === '注册成功') {
+          this.$router.push('/signIn')
+        }
+      })
     },
     register: function () {
       this.customerRegister()
@@ -111,7 +134,6 @@ export default {
     margin-left: 300px;
   }
   .sec span{
-
   }
   #login{
     color:white;

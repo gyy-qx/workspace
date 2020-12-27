@@ -3,7 +3,10 @@ import Home from '../views/Home.vue'
 import SignIn from '../views/SignIn'
 import userSignUp from '../views/userSignUp'
 import comSignUp from '../views/comSignUp'
+import order from '../views/order'
 import Homepage from '../views/Homepage'
+import purchase from '../views/purchase'
+import Myaccount from '../views/Myaccount'
 import MerchantHomepage from '../views/MerchantHomepage'
 
 const routes = [
@@ -36,13 +39,28 @@ const routes = [
     component: comSignUp
   },
   {
-    path: '/homepage',
-    name: Homepage,
-    component: Homepage
-  }, {
     path: '/merchantHomepage',
     name: MerchantHomepage,
     component: MerchantHomepage
+  }, {
+    path: '/Homepage',
+    name: Homepage,
+    component: Homepage
+  },
+  {
+    path: '/purchase',
+    name: 'purchase',
+    component: purchase
+  },
+  {
+    path: '/order',
+    name: 'order',
+    component: order
+  },
+  {
+    path: '/Myaccount',
+    name: 'Myaccount',
+    component: Myaccount
   }
 ]
 

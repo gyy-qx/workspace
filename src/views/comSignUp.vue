@@ -1,6 +1,6 @@
 <template>
   <h1>桃饱网 <span>企业注册</span>  </h1>
-  <div id="comsignUp">
+  <div id="comSignUp">
       <p class="first" style="margin-top: 120px"><span>*</span>基本信息</p>
       <p class="sec">
       <span>用户名</span><input type="text" placeholder="会员名" v-model="businessRegisterVo.username" size="default">
@@ -32,11 +32,11 @@
         <span>银行卡号</span><input type="text" placeholder="请输入银行卡号" v-model="businessRegisterVo.bankCardNumber">
       </p>
       <p class="sec">
-        <span>余额</span><input type="text" placeholder="请输入你的银行卡余额" v-model="customerRegisterVo.balance">
+        <span>余额</span><input type="text" placeholder="请输入你的银行卡余额" v-model="businessRegisterVo.balance">
       </p>
       <p class="first"><span>*</span>请设置登录密码</p>
       <p class="sec">
-        <span>密码</span><input type="text" placeholder="设置你的登录密码" v-model="customerRegisterVo.password">
+        <span>密码</span><input type="text" placeholder="设置你的登录密码" v-model="businessRegisterVo.password">
       </p>
     <input type="button" @click="register" id="login" value="注  册">
     <input type="button" value="切换用户账户注册" id="resve" @click="jumpRegistration" size="large">
@@ -51,7 +51,7 @@ export default {
   name: 'comSignUp',
   data () {
     return {
-      role: 'customer',
+      role: 'business',
       businessRegisterVo: {
         roleName: this.role,
         username: null,
@@ -65,35 +65,39 @@ export default {
         shopName: null,
         businessInformation: null,
         classification: null
-      },
-      customerRegisterVo: {
-        roleName: this.role,
-        username: null,
-        lastname: null,
-        firstname: null,
-        idCard: null,
-        phone: null,
-        email: null,
-        nickname: null,
-        bankCardNumber: null,
-        balance: null,
-        password: null
       }
-
     }
   },
   methods: {
     businessRegister: function () {
-    },
-    customerRegister: function () {
-
+      this.axios({
+        method: 'post',
+        url: 'api/businessRegister',
+        data: {
+          roleName: 'business',
+          username: this.businessRegisterVo.username,
+          lastname: this.businessRegisterVo.lastname,
+          firstname: this.businessRegisterVo.firstname,
+          idCard: this.businessRegisterVo.idCard,
+          phone: this.businessRegisterVo.phone,
+          bankCardNumber: this.businessRegisterVo.bankCardNumber,
+          balance: this.businessRegisterVo.balance,
+          password: this.businessRegisterVo.password,
+          shopName: this.businessRegisterVo.shopName,
+          businessInformation: this.businessRegisterVo.businessInformation,
+          classification: this.businessRegisterVo.classification
+        },
+        headers: {
+          token: this.token // 将token放在请求头带到后端
+        }
+      }).then(res => {
+        if (res.data === '注册成功') {
+          this.$router.push('/signIn')
+        }
+      })
     },
     register: function () {
-      if (this.role === 'business') {
-        this.businessRegister()
-      } else if (this.role === 'customer') {
-        this.customerRegister()
-      }
+      this.businessRegister()
     },
     jumpRegistration: function () {
       router.push('/userSignUp')
