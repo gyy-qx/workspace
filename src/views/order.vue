@@ -22,26 +22,27 @@
         <th>操作</th>
       </tr>
       </thead>
-      <tbody>
+      <tbody v-for=" (company,index) in companyList" :key="index">
       <tr class="tr1">
-        <td colspan="8">店铺：<input type="text" class="commodity"> 店铺名称</td>
+        <td colspan="8">店铺：{{company.name}}</td>
       </tr>
-      <tr class="tr2">
-        <td><input type="text" class="commodity" v-model="details">放商品图片</td>
-        <td><input type="text" class="commodity" v-model="commodityname">商品名称</td>
-        <td><input type="text" class="commodity" v-model="classification">商品分类</td>
-        <td><input type="text" class="commodity" v-model="specifications">商品规格</td>
-        <td><span>2</span></td>
+      <tr v-for=" (user,cindex) in company.list" :key="cindex" class="tr2">
+        <td><input type="text" class="commodity" v-model="user.id" readonly="true"></td>
+        <td><input type="textarea" id="commodityname" v-model="user.name" readonly="true"></td>
+        <td><input type="text" class="commodity" v-model="user.classifition" readonly="true"></td>
+        <td><input type="text" class="commodity" v-model="user.specification" readonly="true"></td>
         <td>
-          <button v-on:click="sub(count)">-</button>
-          <span>{{count}}</span>
-          <!--          <input type="text" value="count" v-model="count">-->
-          <button v-on:click="add(count)">+</button>
+          <input type="text" class="commodity" v-model="user.number" readonly="true">
+<!--          <input type="text" value="count" v-model="user.number">-->
         </td>
-        <td><span class="money">0</span></td>
-        <td><button onclick="num++">删除</button></td>
+        <td><input type="text" class="commodity" v-model="user.money" readonly="true"></td>
+        <td><input type="text" class="commodity" v-model="user.place" readonly="true"></td>
+        <td>
+          <button id="deleteitem" @click="deleteitem(index,cindex)">删除</button>
+          <button id="buyitem" @click="buyitem(index,cindex)">再来一单</button>
+        </td>
       </tr>
-      </tbody>
+    </tbody>
     </table>
   </div>
 </template>
@@ -50,6 +51,59 @@
 import router from '@/router'
 export default {
   name: 'order',
+  data: function () {
+    return {
+      suncount: 0,
+      companyList: [
+        {
+          name: '时尚男装',
+          list: [
+            {
+              id: 1001,
+              name: '男装外套套头百搭秋冬潮男ins风',
+              classifition: '衣服',
+              specification: 'XXL',
+              money: '100',
+              number: '1',
+              place: '上海'
+            },
+            {
+              id: 1002,
+              name: '女装外套',
+              classifition: '衣服',
+              specification: 'L',
+              money: '200',
+              number: '1',
+              place: '郑州'
+            }
+          ]
+        },
+        {
+          name: '时尚女皇',
+          list: [
+            {
+              id: 1001,
+              name: '男装外套',
+              classifition: '衣服',
+              specification: 'XXL',
+              money: '100',
+              number: '1',
+              place: '上海'
+            },
+            {
+              id: 1002,
+              name: '女装外套',
+              classifition: '衣服',
+              specification: 'L',
+              money: '200',
+              number: '1',
+              place: '郑州'
+            }
+          ]
+        }
+      ]
+    }
+  },
   methods: {
     purchase: function () {
       router.push('/purchase')
@@ -62,6 +116,57 @@ export default {
     },
     myaccount: function () {
       router.push('/Myaccount')
+    },
+    deleteitem: function (index, cindex) {
+      this.axios({
+        method: 'post',
+        url: 'api/',
+        data: {
+          // id后续传值图片
+          id: this.companyList[index].list[cindex].id,
+          name: this.companyList[index].list[cindex].name,
+          classifition: this.companyList[index].list[cindex].classifition,
+          specification: this.companyList[index].list[cindex].moneyall,
+          money: this.companyList[index].list[cindex].money,
+          number: this.companyList[index].list[cindex].number,
+          place: this.companyList[index].list[cindex].place
+        },
+        headers: {
+          token: this.token // 将token放在请求头带到后端
+        }
+      }).then(res => {
+        if (res.data === '删除成功') {
+          alert('删除成功')
+          window.location.reload()
+        } else {
+          alert('删除失败，请重新尝试')
+        }
+      })
+    },
+    buyitem: function (index, cindex) {
+      this.axios({
+        method: 'post',
+        url: 'api/',
+        data: {
+          id: this.companyList[index].list[cindex].id,
+          name: this.companyList[index].list[cindex].name,
+          classifition: this.companyList[index].list[cindex].classifition,
+          specification: this.companyList[index].list[cindex].moneyall,
+          money: this.companyList[index].list[cindex].money,
+          number: this.companyList[index].list[cindex].number,
+          place: this.companyList[index].list[cindex].place
+        },
+        headers: {
+          token: this.token // 将token放在请求头带到后端
+        }
+      }).then(res => {
+        if (res.data === '购买成功') {
+          alert('购买成功')
+          window.location.reload()
+        } else {
+          alert('购买失败，请重新尝试')
+        }
+      })
     }
   }
 }
@@ -154,5 +259,20 @@ export default {
   }
   .commodity{
     border:none;
+    width:60%;
+    height: 30px;
+    text-align: center;
+    outline: none;
+  }
+  #commodityname{
+    border: none;
+    outline: none;
+  }
+  #deleteitem{
+    border: #7f807d;
+  }
+  #buyitem{
+    background-color: orangered;
+    border:#b3a3b9;
   }
 </style>
