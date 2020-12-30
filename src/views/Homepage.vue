@@ -29,9 +29,9 @@
         <input type="text" class="commodity" v-model="user.money" readonly="true">
       </td>
       <td class="exceptcheck">
-        <button v-on:click="sub(index,cindex)">-</button>
+        <button v-on:click="sub(index)">-</button>
         <input type="text" class="commodity" v-model="user.number">
-        <button v-on:click="add(index,cindex)">+</button>
+        <button v-on:click="add(index)">+</button>
       </td>
       <td class="exceptcheck">
         <input type="text" class="commodity" v-model="user.moneyall" readonly="true">
@@ -85,6 +85,43 @@ export default {
     },
     myaccount: function () {
       router.push('/myaccount')
+    },
+    add: function (index) {
+      this.list[index].number++
+      this.list[index].moneyall = this.list[index].money * this.list[index].number
+    },
+    sub: function (index) {
+      if (this.list[index].number <= 1) {
+        alert('受不了啦，宝贝不能再减少啦')
+      } else {
+        this.list[index].number--
+        this.list[index].moneyall = this.list[index].money * this.list[index].number
+      }
+    },
+    buyitem: function (index, cindex) {
+      this.axios({
+        method: 'post',
+        url: 'api/',
+        data: {
+          id: this.companyList[index].list[cindex].id,
+          name: this.companyList[index].list[cindex].name,
+          classifition: this.companyList[index].list[cindex].classifition,
+          specification: this.companyList[index].list[cindex].moneyall,
+          money: this.companyList[index].list[cindex].money,
+          number: this.companyList[index].list[cindex].number,
+          moneyall: this.companyList[index].list[cindex].moneyall
+        },
+        headers: {
+          token: this.token // 将token放在请求头带到后端
+        }
+      }).then(res => {
+        if (res.data === '购买成功') {
+          alert('购买成功')
+          window.location.reload()
+        } else {
+          alert('购买失败，请重新尝试')
+        }
+      })
     }
   }
 }

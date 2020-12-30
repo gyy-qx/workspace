@@ -44,7 +44,7 @@
       <span>密码</span><input type="text" v-model="customerRegisterVo.password">
     </p>
   </div>
-  <input type="button" @click="register" id="login" value="注  册">
+  <input type="button" @click="register" id="login" value="提  交">
 </template>
 
 <script>
