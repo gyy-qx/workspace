@@ -45,6 +45,7 @@
 <script>
 import { message } from 'ant-design-vue'
 import router from '@/router'
+import store from '@/store'
 
 export default {
   name: 'SignIn',
@@ -96,6 +97,8 @@ export default {
       }).then(res => {
         if (res.data === '登录成功') {
           alert('登录成功')
+
+          store.commit('setUsername', this.user.username)
 
           if (this.role === 'customer') {
             this.$router.push('/Homepage')

@@ -1,5 +1,5 @@
 <template>
-  <h1>桃饱网 <span>个人中心</span>  </h1>
+  <h1>桃饱网 <span>个人中心</span></h1>
   <div id="nav">
     <a @click="Homepage">桃饱首页</a>
     <a @click="order">我的订单</a>
@@ -7,7 +7,7 @@
     <a @click="purchase" style="margin-right: 100px">购物车</a>
   </div>
   <div id="navlight"></div>
-  <p id="all"> <strong>修改客户信息</strong></p>
+  <p id="all"><strong>修改客户信息</strong></p>
   <hr>
   <div id="usersignUp">
     <p class="first" style="margin-top: 120px"><span>*</span>基本信息</p>
@@ -37,7 +37,7 @@
       <span>银行卡号</span><input type="text" v-model="customerRegisterVo.bankCardNumber">
     </p>
     <p class="sec">
-      <span>余额</span><input type="text" v-model="customerRegisterVo.balance">
+      <span>余额</span><input type="text" v-model="customerRegisterVo.balance" readonly="true">
     </p>
     <p class="first"><span>*</span>请设置登录密码</p>
     <p class="sec">
@@ -78,19 +78,19 @@ export default {
   },
   created () {
     this.customerRegisterVo.username = store.state.username
-    axios.get('/api/').then(
+    axios.get('/api/customer/username/' + store.state.username).then(
       response => {
         const result = response.data
         this.customerRegisterVo.username = result.username
         this.customerRegisterVo.nickname = result.nickname
         this.customerRegisterVo.lastname = result.lastname
         this.customerRegisterVo.firstname = result.firstname
-        // idCard: this.customerRegisterVo.idCard,
-        // phone: this.customerRegisterVo.phone,
-        // email: this.customerRegisterVo.email,
-        // bankCardNumber: this.customerRegisterVo.bankCardNumber,
-        // balance: this.customerRegisterVo.balance,
-        // password: this.customerRegisterVo.password
+        this.customerRegisterVo.idCard = result.idCard
+        this.customerRegisterVo.phone = result.phone
+        this.customerRegisterVo.email = result.email
+        this.customerRegisterVo.bankCardNumber = result.bankCardNumber
+        this.customerRegisterVo.balance = result.balance
+        this.customerRegisterVo.password = result.password
       })
   },
   methods: {
@@ -133,67 +133,79 @@ export default {
 </script>
 
 <style scoped>
-h1{
+h1 {
   position: absolute;
-  top:100px;
-  left:200px;
+  top: 100px;
+  left: 200px;
   font-family: 幼圆;
   font-size: 40px;
   color: lightcoral;
 }
-h1 span{
+
+h1 span {
   font-size: 30px;
-  color:#41464b;
+  color: #41464b;
 }
-  #nav{
-    float:right;
-    margin-top: 20px;
-  }
-  #nav a{
-    text-decoration: none;
-    font-size: 15px;
-    color: #41464b;
-    margin-right: 20px;
-  }
-  #navlight{
-    width: 100%;
-    height: 50px;
-    background-color: orangered;
-  }
-  hr{
-    margin-left: 10%;
-    width:80%;
-    color:#987cb9;
-    SIZE:5px;
-    margin-top: 165px;
-  }
-  #all{
-    margin-top: 130px;
-    font-size:20px;
-    color: darkorange;
-    float:left;
-    margin-left: 250px;
-    display: inline-block;
-  }
-  .first{
-    font-size: 20px;
-    margin-right: 40%;
-  }
-.first span{
+
+#nav {
+  float: right;
+  margin-top: 20px;
+}
+
+#nav a {
+  text-decoration: none;
+  font-size: 15px;
+  color: #41464b;
+  margin-right: 20px;
+}
+
+#navlight {
+  width: 100%;
+  height: 50px;
+  background-color: orangered;
+}
+
+hr {
+  margin-left: 10%;
+  width: 80%;
+  color: #987cb9;
+  SIZE: 5px;
+  margin-top: 165px;
+}
+
+#all {
+  margin-top: 130px;
+  font-size: 20px;
+  color: darkorange;
+  float: left;
+  margin-left: 250px;
+  display: inline-block;
+}
+
+.first {
+  font-size: 20px;
+  margin-right: 40%;
+}
+
+.first span {
   color: lightcoral;
 }
-.sec{
+
+.sec {
   color: #4f5050;
 }
-.sec input{
-  border:solid 1px #c4d0ff;
+
+.sec input {
+  border: solid 1px #c4d0ff;
   position: absolute;
   left: 60%;
 }
-.sec span{
+
+.sec span {
 }
-#login{
-  color:white;
+
+#login {
+  color: white;
   width: 20%;
   height: 10%;
   display: block;

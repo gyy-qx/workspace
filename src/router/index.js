@@ -6,6 +6,8 @@ import comSignUp from '../views/comSignUp'
 import order from '../views/order'
 import Homepage from '../views/Homepage'
 import purchase from '../views/purchase'
+// import changecom from '../views/changecom'
+import changecom from '../views/changecom'
 import Myaccount from '../views/Myaccount'
 import MerchantHomepage from '../views/MerchantHomepage'
 
@@ -58,9 +60,14 @@ const routes = [
     component: order
   },
   {
-    path: '/Myaccount',
+    path: '/myaccount',
     name: 'Myaccount',
     component: Myaccount
+  },
+  {
+    path: '/changecom',
+    name: 'changecom',
+    component: changecom
   }
 ]
 
