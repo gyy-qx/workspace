@@ -71,7 +71,7 @@ export default {
   created () {
     this.businessRegisterVo.username = store.state.username
     console.log(store.state.username)
-    axios.get('/api/' + this.businessRegisterVo.username).then(response => {
+    axios.get('/api/business/username/' + this.businessRegisterVo.username).then(response => {
       const result = response.data
       console.log('返回值为')
       console.log(result)
@@ -104,9 +104,6 @@ export default {
           idCard: this.businessRegisterVo.idCard,
           bankCardNumber: this.businessRegisterVo.bankCardNumber,
           password: this.businessRegisterVo.password
-        },
-        headers: {
-          token: this.token // 将token放在请求头带到后端
         }
       }).then(res => {
         if (res.data === '修改成功') {

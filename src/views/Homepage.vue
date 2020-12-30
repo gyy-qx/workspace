@@ -19,7 +19,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr v-for=" (commodity,index) in list" :key="index" class="tr2">
+    <tr v-for="(commodity,index) in list" :key="index" class="tr2">
       <td class="exceptcheck"><input type="text" class="commodity" v-model="commodity.id" readonly="true"></td>
       <td class="exceptcheck"><input type="textarea" id="commodityname" v-model="commodity.name" readonly="true"></td>
       <td class="exceptcheck"><input type="text" class="commodity" v-model="commodity.classification" readonly="true">

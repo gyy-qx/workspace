@@ -1,5 +1,5 @@
 <template>
-  <h1>桃饱网 <span>购物车</span>  </h1>
+  <h1>桃饱网 <span>购物车</span></h1>
   <div id="nav">
     <a @click="Homepage">桃饱首页</a>
     <a @click="order">我的订单</a>
@@ -8,138 +8,71 @@
   </div>
   <div id="navlight"></div>
   <div>
-    <p id="all"> <strong>全部商品</strong></p>
-    <p id="count"> <button @click="countall">全选商品</button>  <span>￥</span>  <span>{{commodityall}}</span> </p>
+    <p id="all"><strong>全部商品</strong></p>
+    <p id="count">
+      <button @click="countall">全选商品</button>
+      <span>￥</span> <span>{{ totalPrice }}</span></p>
+    <p>
+      <button @click="save">保存</button>
+    </p>
   </div>
   <hr>
-    <table>
-      <thead>
-      <tr>
-        <th class="checkitem"></th>
-        <th colspan="4">商品信息</th>
-        <th>单价</th>
-        <th>数量</th>
-        <th>金额</th>
-        <th>操作</th>
-      </tr>
-      </thead>
-<!--      <tbody>-->
-<!--      <tr class="tr1">-->
-<!--        <td colspan="8">店铺：<input type="text" class="commodity"> 店铺名称</td>-->
-<!--      </tr>-->
-<!--      <tr class="tr2">-->
-<!--        <td><input type="text" class="commodity" v-model="details">放商品图片</td>-->
-<!--        <td><input type="text" class="commodity" v-model="commodityname">商品名称</td>-->
-<!--        <td><input type="text" class="commodity" v-model="classification">商品分类</td>-->
-<!--        <td><input type="text" class="commodity" v-model="specifications">商品规格</td>-->
-<!--        <td><span>2</span></td>-->
-<!--        <td>-->
-<!--          <button v-on:click="sub(count)">-</button>-->
-<!--          <span>{{count}}</span>-->
-<!--&lt;!&ndash;          <input type="text" value="count" v-model="count">&ndash;&gt;-->
-<!--          <button v-on:click="add(count)">+</button>-->
-<!--        </td>-->
-<!--        <td><span class="money">0</span></td>-->
-<!--        <td><button onclick="num++">删除</button></td>-->
-<!--      </tr>-->
-      <tbody v-for=" (company,index) in companyList" :key="index">
-      <tr class="tr1">
-        <td colspan="8">店铺：{{company.name}}</td>
-      </tr>
-      <tr v-for=" (user,cindex) in company.list" :key="cindex" class="tr2">
-        <td class="checkitem">
-          <input type="checkbox" :value="user.id" v-model="checkItem" @change="selectOne" />
-        </td>
-        <td class="exceptcheck"><input type="text" class="commodity" v-model="user.id" readonly="true"></td>
-        <td class="exceptcheck"><input type="text" id="commodityname" v-model="user.name" readonly="true"></td>
-        <td class="exceptcheck"><input type="text" class="commodity" v-model="user.classifition" readonly="true"></td>
-        <td class="exceptcheck"><input type="text" class="commodity" v-model="user.specification" readonly="true"></td>
-        <td class="exceptcheck">
-<!--          <span>{{user.money}}</span>-->
-          <input type="text" class="commodity" v-model="user.money" readonly="true">
-        </td>
-        <td class="exceptcheck">
-          <button v-on:click="sub(index,cindex)">-</button>
-          <input type="text" class="commodity" v-model="user.number">
-          <button v-on:click="add(index,cindex)">+</button>
-        </td>
-        <td class="exceptcheck">
-          <input type="text" class="commodity" v-model="user.moneyall" readonly="true">
-        </td>
-        <td class="exceptcheck">
-          <button id="deleteitem" @click="deleteitem(index,cindex)">删除</button>
-          <button id="buyitem" @click="buyitem(index,cindex)">购买</button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+  <table>
+    <thead>
+    <tr>
+      <th class="checkitem"></th>
+      <th colspan="4">商品信息</th>
+      <th>单价</th>
+      <th>数量</th>
+      <th>金额</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr v-for="(commodity,index) in commodities" :key="index" class="tr2">
+      <td class="exceptcheck"><input type="text" class="commodity" v-model="commodity.id" readonly="true"></td>
+      <td class="exceptcheck"><input type="text" id="commodityname" v-model="commodity.name" readonly="true"></td>
+      <td class="exceptcheck"><input type="text" class="commodity" v-model="commodity.classifition" readonly="true">
+      </td>
+      <td class="exceptcheck"><input type="text" class="commodity" v-model="commodity.specification" readonly="true">
+      </td>
+      <td class="exceptcheck">
+        <input type="text" class="commodity" v-model="commodity.price" readonly="true">
+      </td>
+      <td class="exceptcheck">
+        <button v-on:click="sub(index,index)">-</button>
+        <input type="text" class="commodity" v-model="commodity.quantity">
+        <button v-on:click="add(index,index)">+</button>
+      </td>
+      <td class="exceptcheck">
+        <input type="text" class="commodity" v-model="commodity.moneyall" readonly="true">
+      </td>
+      <td class="exceptcheck">
+        <button id="deleteitem" @click="deleteitem(index)">删除</button>
+        <button id="buyitem" @click="buyitem(index)">购买</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 </template>
 
 <script>
 import router from '@/router'
 import axios from 'axios'
+import store from '@/store'
+import { message } from 'ant-design-vue'
+
 export default {
   name: 'purchase',
   data: function () {
     return {
-      commodityall: 0,
-      companyList: [
-        {
-          name: '时尚男装',
-          list: [
-            {
-              id: 1001,
-              name: '男装外套',
-              classifition: '衣服',
-              specification: 'XXL',
-              money: '100',
-              number: '1',
-              moneyall: '100'
-            },
-            {
-              id: 1002,
-              name: '女装外套',
-              classifition: '衣服',
-              specification: 'L',
-              money: '200',
-              number: '1',
-              moneyall: '200'
-            }
-          ]
-        },
-        {
-          name: '时尚女皇',
-          list: [
-            {
-              id: 1001,
-              name: '男装外套',
-              classifition: '衣服',
-              specification: 'XXL',
-              money: '100',
-              number: '1',
-              moneyall: '100'
-            },
-            {
-              id: 1002,
-              name: '女装外套',
-              classifition: '衣服',
-              specification: 'L',
-              money: '200',
-              number: '1',
-              moneyall: '200'
-            }
-          ]
-        }
-      ]
+      totalPrice: 0,
+      commodities: null
     }
   },
   created () {
-    axios.get('/api/orderForm').then(response => {
-      this.count = response.data.quantity
-      this.commodityname = response.data.name
-      this.details = response.data.details
-      this.classification = response.data.classification
-      this.specifications = response.data.specifications
+    axios.get('/api/shoppingCart/' + store.state.username).then(response => {
+      this.commodities = response.data
     }).catch(error => {
       console.log(error)
     })
@@ -158,77 +91,77 @@ export default {
       router.push('/Myaccount')
     },
     countall: function () {
-      this.commodityall = 0
-      // this.list[index].all = number
-      for (let j = 0; j < this.companyList.length; j++) {
-        for (let i = 0; i < this.companyList[j].list.length; i++) {
-          this.commodityall += Number(this.companyList[j].list[i].moneyall)
-        }
+      for (let i = 0; i < this.commodities.length; i++) {
+        this.totalPrice += this.commodities[i].moneyall
       }
-      return this.commodityall
     },
-    selectOne: function () {
-
+    add: function (index) {
+      this.commodities[index].number++
+      this.commodities[index].moneyall = this.commodities[index].money * this.commodities[index].quantity
     },
-    add: function (index, cindex) {
-      this.companyList[index].list[cindex].number++
-      this.companyList[index].list[cindex].moneyall = this.companyList[index].list[cindex].money * this.companyList[index].list[cindex].number
-    },
-    sub: function (index, cindex) {
-      if (this.companyList[index].list[cindex].number <= 1) {
-        alert('受不了啦，宝贝不能再减少啦')
+    sub: function (index) {
+      if (this.commodities[index].quantity <= 1) {
+        message.info('受不了啦，宝贝不能再减少啦')
+        // alert()
       } else {
-        this.companyList[index].list[cindex].number--
-        this.companyList[index].list[cindex].moneyall = this.companyList[index].list[cindex].money * this.companyList[index].list[cindex].number
+        this.commodities[index].quantity--
+        this.commodities[index].moneyall = this.commodities[index].price * this.commodities[index].quantity
       }
     },
-    deleteitem: function (index, cindex) {
-      this.axios({
-        method: 'post',
-        url: 'api/',
-        data: {
-          id: this.companyList[index].list[cindex].id,
-          name: this.companyList[index].list[cindex].name,
-          classifition: this.companyList[index].list[cindex].classifition,
-          specification: this.companyList[index].list[cindex].moneyall,
-          money: this.companyList[index].list[cindex].money,
-          number: this.companyList[index].list[cindex].number,
-          moneyall: this.companyList[index].list[cindex].moneyall
-        },
-        headers: {
-          token: this.token // 将token放在请求头带到后端
-        }
-      }).then(res => {
-        if (res.data === '删除成功') {
-          alert('删除成功')
-          window.location.reload()
-        } else {
-          alert('删除失败，请重新尝试')
-        }
-      })
+    deleteitem: function (index) {
+      this.commodities.slice(index, 1)
     },
-    buyitem: function (index, cindex) {
+    buyitem: function (index) {
+      console.log(this.dateFormat(new Date()))
       this.axios({
         method: 'post',
-        url: 'api/',
+        url: 'api/orderForm',
         data: {
-          id: this.companyList[index].list[cindex].id,
-          name: this.companyList[index].list[cindex].name,
-          classifition: this.companyList[index].list[cindex].classifition,
-          specification: this.companyList[index].list[cindex].moneyall,
-          money: this.companyList[index].list[cindex].money,
-          number: this.companyList[index].list[cindex].number,
-          moneyall: this.companyList[index].list[cindex].moneyall
+          userId: this.userId,
+          submissionTime: this.dateFormat(new Date()),
+          shippingAddress: '',
+          state: '进行中',
+          amount: this.commodities[index].moneyall,
+          commodities: [
+            {
+              shopName: '',
+              commodityDtoList: [
+                {
+                  id: this.commodities[index].id,
+                  name: this.commodities[index].name,
+                  classification: this.commodities[index].classification,
+                  placeOfOrigin: this.commodities[index].details,
+                  specifications: this.commodities[index].moneyall,
+                  details: this.commodities[index].details,
+                  price: this.commodities[index].price,
+                  launchTime: this.commodities[index].launchTime,
+                  quantity: this.commodities[index].number
+                }
+              ]
+            }
+          ]
         },
         headers: {
           token: this.token // 将token放在请求头带到后端
         }
       }).then(res => {
         if (res.data === '购买成功') {
-          alert('购买成功')
-          window.location.reload()
+          message.info('购买成功')
         } else {
-          alert('购买失败，请重新尝试')
+          message.info('购买失败，请重新尝试')
+        }
+      })
+    },
+    save: function () {
+      this.axios({
+        method: 'post',
+        url: 'api/shoppingCart/' + store.state.username,
+        data: this.commodities
+      }).then(res => {
+        if (res.data === '保存成功') {
+          message.info('保存成功')
+        } else {
+          message.info('保存失败，请重新尝试')
         }
       })
     }
@@ -237,110 +170,130 @@ export default {
 </script>
 
 <style scoped>
-  *{
-    margin: 0px;
-  }
-  #nav{
-    float:right;
-    margin-top: 20px;
-  }
-  #nav a{
-    text-decoration: none;
-    font-size: 15px;
-    color: #41464b;
-    margin-right: 20px;
-  }
-  #navlight{
-    width: 100%;
-    height: 50px;
-    background-color: orangered;
-  }
-  h1{
-    position: absolute;
-    top:100px;
-    left:200px;
-    font-family: 幼圆;
-    font-size: 40px;
-    color: lightcoral;
-  }
-  h1 span{
-    width: 10px;
-    font-size: 30px;
-    color:#41464b;
-  }
-  hr{
-    margin-left: 10%;
-    width:80%;
-    color:#987cb9;
-    SIZE:5px;
-    margin-top: 165px;
-  }
-  #all{
-    margin-top: 130px;
-    font-size:20px;
-    color: darkorange;
-    float:left;
-    margin-left: 250px;
-    display: inline-block;
-  }
-  #count{
-    display: inline-block;
-    margin-top: 130px;
-    font-size: 10px;
-    float: right;
-    margin-right: 200px;
-  }
-  #count button{
-    text-decoration: none;
-  }
-  .checkitem{
-    width: 2%;
-    /*border: solid red 1px;*/
-  }
-  table{
-    margin-top: 30px;
-    margin-left: 10%;
-    width: 82%;
-    text-align: center;
-  }
-  th{
-    width: 10%;
-    margin-bottom: 20px;
-    line-height: 50px;
-  }
-  tbody .tr2{
-    border: solid 1px #b3a3b9;
-    margin-top: 20px;
-  }
-  tbody .tr1{
-    line-height: 50px;
-    text-align: left;
-    font-size: 10px;
-  }
-  .exceptcheck{
-    width: 10%;
-    /*border: solid 1px #b3a3b9;*/
-    line-height: 120px;
-  }
-  td button{
-    line-height: 20px;
-  }
-.commodity{
-  border:none;
-  width:60%;
+* {
+  margin: 0px;
+}
+
+#nav {
+  float: right;
+  margin-top: 20px;
+}
+
+#nav a {
+  text-decoration: none;
+  font-size: 15px;
+  color: #41464b;
+  margin-right: 20px;
+}
+
+#navlight {
+  width: 100%;
+  height: 50px;
+  background-color: orangered;
+}
+
+h1 {
+  position: absolute;
+  top: 100px;
+  left: 200px;
+  font-family: 幼圆;
+  font-size: 40px;
+  color: lightcoral;
+}
+
+h1 span {
+  width: 10px;
+  font-size: 30px;
+  color: #41464b;
+}
+
+hr {
+  margin-left: 10%;
+  width: 80%;
+  color: #987cb9;
+  SIZE: 5px;
+  margin-top: 165px;
+}
+
+#all {
+  margin-top: 130px;
+  font-size: 20px;
+  color: darkorange;
+  float: left;
+  margin-left: 250px;
+  display: inline-block;
+}
+
+#count {
+  display: inline-block;
+  margin-top: 130px;
+  font-size: 10px;
+  float: right;
+  margin-right: 200px;
+}
+
+#count button {
+  text-decoration: none;
+}
+
+.checkitem {
+  width: 2%;
+  /*border: solid red 1px;*/
+}
+
+table {
+  margin-top: 30px;
+  margin-left: 10%;
+  width: 82%;
+  text-align: center;
+}
+
+th {
+  width: 10%;
+  margin-bottom: 20px;
+  line-height: 50px;
+}
+
+tbody .tr2 {
+  border: solid 1px #b3a3b9;
+  margin-top: 20px;
+}
+
+tbody .tr1 {
+  line-height: 50px;
+  text-align: left;
+  font-size: 10px;
+}
+
+.exceptcheck {
+  width: 10%;
+  /*border: solid 1px #b3a3b9;*/
+  line-height: 120px;
+}
+
+td button {
+  line-height: 20px;
+}
+
+.commodity {
+  border: none;
+  width: 60%;
   height: 30px;
   text-align: center;
   outline: none;
 }
-  #commodityname{
-    border: none;
-    outline: none;
-  }
-  #deleteitem{
-    border: #7f807d;
-  }
-  #buyitem{
-    background-color: orangered;
-    border:#b3a3b9;
-  }
+
+#commodityname {
+  border: none;
+  outline: none;
+}
+
+#deleteitem {
+  border: #7f807d;
+}
+
+#buyitem {
+  background-color: orangered;
+  border: #b3a3b9;
+}
 </style>

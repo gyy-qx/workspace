@@ -22,7 +22,7 @@
         <th>操作</th>
       </tr>
       </thead>
-      <tbody v-for=" (company,index) in companyList" :key="index">
+      <tbody v-for="(company,index) in companyList" :key="index">
       <tr class="tr1">
         <td colspan="8">店铺：{{company.name}}</td>
       </tr>
