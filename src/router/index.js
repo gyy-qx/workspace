@@ -60,7 +60,7 @@ const routes = [
     component: order
   },
   {
-    path: '/Myaccount',
+    path: '/myaccount',
     name: 'Myaccount',
     component: Myaccount
   },

@@ -18,11 +18,11 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(response => {
   if (response.headers.token) {
     store.commit('setToken', response.headers.token)
+    console.log('拦截器已保存token')
     // store.mutations.setToken(this.state, response.headers.token)
   }
   return response
 }, error => {
-  console.log('在response拦截器显示错误')
   console.log(error)
   if (error.response) {
     switch (error.response.status) {
