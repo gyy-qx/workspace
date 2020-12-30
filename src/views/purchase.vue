@@ -10,11 +10,9 @@
   <div>
     <p id="all"><strong>全部商品</strong></p>
     <p id="count">
+      <button id="save" @click="save">保存</button>
       <button @click="countall">全选商品</button>
       <span>￥</span> <span>{{ totalPrice }}</span></p>
-    <p>
-      <button @click="save">保存</button>
-    </p>
   </div>
   <hr>
   <table>

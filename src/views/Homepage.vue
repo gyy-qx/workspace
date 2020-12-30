@@ -7,7 +7,10 @@
   </div>
   <div id="navlight"></div>
   <h1>桃饱网 <span>首页</span></h1>
-
+  <div id="count">
+    <input type="button" @click="refresh" value="刷新"/>
+  </div>
+  <hr>
   <table>
     <thead>
     <tr>
@@ -38,16 +41,12 @@
         <input type="text" class="commodity" v-model="commodity.moneyall" readonly="true">
       </td>
       <td class="exceptcheck">
+        <button id="inadd" @click="inadd(index)">加入购物车</button>
         <button id="buyitem" @click="buyitem(index)">购买</button>
       </td>
     </tr>
     </tbody>
   </table>
-  <div>
-    <label>
-      <input type="button" @click="refresh" value="刷新"/>
-    </label>
-  </div>
 </template>
 
 <script>
@@ -125,6 +124,48 @@ export default {
         this.list[index].number--
         this.list[index].moneyall = this.list[index].price * this.list[index].number
       }
+    },
+    inadd: function (index) {
+      console.log(this.dateFormat(new Date()))
+      this.axios({
+        method: 'post',
+        url: 'api/orderForm',
+        data: {
+          userId: this.userId,
+          submissionTime: this.dateFormat(new Date()),
+          shippingAddress: '',
+          state: '进行中',
+          amount: this.list[index].moneyall,
+          commodities: [
+            {
+              shopName: '',
+              commodityDtoList: [
+                {
+                  id: this.list[index].id,
+                  name: this.list[index].name,
+                  classification: this.list[index].classification,
+                  placeOfOrigin: this.list[index].details,
+                  specifications: this.list[index].moneyall,
+                  details: this.list[index].details,
+                  price: this.list[index].price,
+                  launchTime: this.list[index].launchTime,
+                  quantity: this.list[index].number
+                }
+              ]
+            }
+          ]
+        },
+        headers: {
+          token: this.token // 将token放在请求头带到后端
+        }
+      }).then(res => {
+        if (res.data === '加入购物车成功') {
+          message.info('加入购物车成功')
+          // window.location.reload()
+        } else {
+          message.info('加入购物车失败，请重新尝试')
+        }
+      })
     },
     buyitem: function (index) {
       console.log(this.dateFormat(new Date()))
@@ -223,14 +264,27 @@ h1 span {
   font-size: 30px;
   color: #41464b;
 }
-
+#count {
+  display: inline-block;
+  margin-top: 120px;
+  font-size: 10px;
+  float: right;
+  margin-right: 300px;
+}
+hr {
+  margin-left: 10%;
+  width: 80%;
+  color: #987cb9;
+  SIZE: 5px;
+  margin-top: 165px;
+}
 .checkitem {
   width: 2%;
   /*border: solid red 1px;*/
 }
 
 table {
-  margin-top: 150px;
+  margin-top: 30px;
   margin-left: 10%;
   width: 82%;
   text-align: center;
@@ -275,7 +329,10 @@ td button {
   border: none;
   outline: none;
 }
-
+#inadd {
+  background-color: orangered;
+  border: #b3a3b9;
+}
 #buyitem {
   background-color: orangered;
   border: #b3a3b9;
