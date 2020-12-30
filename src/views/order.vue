@@ -219,13 +219,6 @@ export default {
     margin-left: 250px;
     display: inline-block;
   }
-  #count{
-    display: inline-block;
-    margin-top: 130px;
-    font-size: 10px;
-    float: right;
-    margin-right: 200px;
-  }
   #count button{
     text-decoration: none;
   }
