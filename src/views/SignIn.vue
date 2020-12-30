@@ -18,7 +18,7 @@
 <!--      <a-col :span="8"/>-->
 <!--    </a-row>-->
       <input type="text" class="input1"  placeholder="会员名" v-model="user.username">
-      <input type="possword" class="input1" placeholder="请输入登录密码" v-model="user.password">
+      <input type="password" class="input1" placeholder="请输入登录密码" v-model="user.password">
       <input type="text" class="input2" placeholder="验证码" v-model="user.code">
       <img class="verify" @click.prevent="refresh" ref="codeImg" alt="验证码" src=""/>
       <input type="button" value="登录" id="sign" @click="signIn"  size="large">

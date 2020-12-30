@@ -9,7 +9,7 @@
   <div id="navlight"></div>
   <div>
     <p id="all"> <strong>全部商品</strong></p>
-    <p id="count"> <button @click="countall">全选商品</button>  <span>￥</span>  <span>{{moneyall}}</span> </p>
+    <p id="count"> <button @click="countall">全选商品</button>  <span>￥</span>  <span>{{commodityall}}</span> </p>
   </div>
   <hr>
     <table>
@@ -51,7 +51,7 @@
           <input type="checkbox" :value="user.id" v-model="checkItem" @change="selectOne" />
         </td>
         <td class="exceptcheck"><input type="text" class="commodity" v-model="user.id" readonly="true"></td>
-        <td class="exceptcheck"><input type="text" class="commodity" v-model="user.name" readonly="true"></td>
+        <td class="exceptcheck"><input type="text" id="commodityname" v-model="user.name" readonly="true"></td>
         <td class="exceptcheck"><input type="text" class="commodity" v-model="user.classifition" readonly="true"></td>
         <td class="exceptcheck"><input type="text" class="commodity" v-model="user.specification" readonly="true"></td>
         <td class="exceptcheck">
@@ -82,7 +82,7 @@ export default {
   name: 'purchase',
   data: function () {
     return {
-      moneyall: 0,
+      commodityall: 0,
       companyList: [
         {
           name: '时尚男装',
@@ -158,14 +158,14 @@ export default {
       router.push('/Myaccount')
     },
     countall: function () {
-      this.moneyall = 0
+      this.commodityall = 0
       // this.list[index].all = number
       for (let j = 0; j < this.companyList.length; j++) {
         for (let i = 0; i < this.companyList[j].list.length; i++) {
-          this.moneyall += Number(this.companyList[j].list[i].money)
+          this.commodityall += Number(this.companyList[j].list[i].moneyall)
         }
       }
-      return this.moneyall
+      return this.commodityall
     },
     selectOne: function () {
 
@@ -332,6 +332,10 @@ export default {
   text-align: center;
   outline: none;
 }
+  #commodityname{
+    border: none;
+    outline: none;
+  }
   #deleteitem{
     border: #7f807d;
   }

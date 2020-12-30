@@ -7,63 +7,47 @@
     <a @click="purchase" style="margin-right: 100px">购物车</a>
   </div>
   <div id="navlight"></div>
-  <a-layout id="responsive-layout">
-
-    <a-layout-sider breakpoint="lg" collapsed-width="0" @collapse="onCollapse" @breakpoint="onBreakpoint">
-      <div>
-        <img id="logo" src="../assets/peach.png" alt="logo">
-      </div>
-      <a-menu :theme="theme" mode="inline" v-model:selectedKeys="selectedKeys">
-        <a-menu-item key="1" @click="selectedItem=1">
-          <HomeOutlined/>
-          <span class="nav-text">主页</span>
-        </a-menu-item>
-        <a-menu-item key="2" @click="selectedItem=2">
-          <ShoppingCartOutlined/>
-          <span class="nav-text">已经买到的宝贝</span>
-        </a-menu-item>
-        <a-menu-item key="3" @click="selectedItem=3">
-          <user-outlined/>
-          <span class="nav-text">账户设置</span>
-        </a-menu-item>
-      </a-menu>
-      <div>
-        <a-switch :default-checked="false" @change="changeTheme"/>
-        Change Theme
-      </div>
-    </a-layout-sider>
-
-    <a-layout>
-      <div v-if="selectedItem===1">
-        <a-layout-content>
-          <div>
-            在此输出客户信息
-          </div>
-        </a-layout-content>
-      </div>
-
-      <div v-if="selectedItem===2">
-        <a-layout-content>
-          <div>
-            已经买到的宝贝，显示订单
-          </div>
-        </a-layout-content>
-      </div>
-
-      <div v-if="selectedItem===3">
-        <a-layout-content>
-          <div>
-            修改客户信息
-          </div>
-        </a-layout-content>
-      </div>
-
-    </a-layout>
-  </a-layout>
+  <p id="all"> <strong>修改客户信息</strong></p>
+  <hr>
+  <div id="usersignUp">
+    <p class="first" style="margin-top: 120px"><span>*</span>基本信息</p>
+    <p class="sec">
+      <span>用户名</span><input type="text" v-model="customerRegisterVo.username">
+    </p>
+    <p class="sec">
+      <span>昵称</span><input type="text" v-model="customerRegisterVo.nickname">
+    </p>
+    <p class="sec">
+      <span>姓</span><input type="text" v-model="customerRegisterVo.lastname">
+    </p>
+    <p class="sec">
+      <span>名</span><input type="text" v-model="customerRegisterVo.firstname">
+    </p>
+    <p class="sec">
+      <span>身份证号码</span><input type="text" v-model="customerRegisterVo.idCard">
+    </p>
+    <p class="sec">
+      <span>联系方式</span><input type="text" v-model="customerRegisterVo.phone">
+    </p>
+    <p class="sec">
+      <span>邮箱</span><input type="text" v-model="customerRegisterVo.email">
+    </p>
+    <p class="first"><span>*</span>银行卡信息</p>
+    <p class="sec">
+      <span>银行卡号</span><input type="text" v-model="customerRegisterVo.bankCardNumber">
+    </p>
+    <p class="sec">
+      <span>余额</span><input type="text" v-model="customerRegisterVo.balance">
+    </p>
+    <p class="first"><span>*</span>请设置登录密码</p>
+    <p class="sec">
+      <span>密码</span><input type="text" v-model="customerRegisterVo.password">
+    </p>
+  </div>
+  <input type="button" @click="register" id="login" value="注  册">
 </template>
 
 <script>
-import { HomeOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons-vue'
 import router from '@/router'
 import store from '@/store'
 import axios from 'axios'
@@ -77,7 +61,7 @@ export default {
       selectedItem: Number,
       searchString: '',
 
-      customer: {
+      customerRegisterVo: {
         id: '',
         roleName: 'customer',
         username: '',
@@ -93,23 +77,21 @@ export default {
       }
     }
   },
-  components: {
-    HomeOutlined,
-    ShoppingCartOutlined,
-    UserOutlined
-  },
   created () {
-    this.customer.username = store.state.username
-    console.log(store.state.username)
-    axios.get('/api/customer/username/' + this.customer.username).then(response => {
-      const result = response.data
-      console.log('返回值为')
-      console.log(result)
-      this.customer.id = result.id
-      this.customer.phone = result.phone
-    }).catch(error => {
-      console.log(error)
-    })
+    this.customerRegisterVo.username = store.state.username
+    axios.get('/api/').then(
+      response => {
+        this.customerRegisterVo.username = response.data.username,
+        this.customerRegisterVo.nickname = response.data.nickname,
+        this.customerRegisterVo.lastname = response.data.lastname
+        // firstname: this.customerRegisterVo.firstname,
+        // idCard: this.customerRegisterVo.idCard,
+        // phone: this.customerRegisterVo.phone,
+        // email: this.customerRegisterVo.email,
+        // bankCardNumber: this.customerRegisterVo.bankCardNumber,
+        // balance: this.customerRegisterVo.balance,
+        // password: this.customerRegisterVo.password
+      })
   },
   methods: {
     changeTheme (checked) {
@@ -136,8 +118,15 @@ export default {
     Homepage: function () {
       router.push('/Homepage')
     },
+    PersonSetting: function () {
+      this.selectedItem = 3
+      this.axios.get('/api/').then(
+        response => {
+          this.count = response.data.quantity
+          this.commodityname = response.data.name
+        })
+    },
     searchCommodity: function () {
-
     }
   }
 }
@@ -181,6 +170,21 @@ h1 span{
   margin-top: 150px;
   margin-left: 200px;
 }
+  hr{
+    margin-left: 10%;
+    width:80%;
+    color:#987cb9;
+    SIZE:5px;
+    margin-top: 165px;
+  }
+  #all{
+    margin-top: 130px;
+    font-size:20px;
+    color: darkorange;
+    float:left;
+    margin-left: 250px;
+    display: inline-block;
+  }
 #responsive-layout #search {
 
 }
