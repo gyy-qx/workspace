@@ -94,18 +94,6 @@ export default {
       })
   },
   methods: {
-    changeTheme (checked) {
-      this.theme = checked ? 'dark' : 'light'
-    },
-    onCollapse (collapsed, type) {
-      console.log(collapsed, type)
-    },
-    onBreakpoint (broken) {
-      console.log(broken)
-    },
-    toHome: function () {
-      router.push('/signIn')
-    },
     order: function () {
       router.push('/order')
     },
@@ -117,16 +105,6 @@ export default {
     },
     Homepage: function () {
       router.push('/Homepage')
-    },
-    PersonSetting: function () {
-      this.selectedItem = 3
-      this.axios.get('/api/').then(
-        response => {
-          this.count = response.data.quantity
-          this.commodityname = response.data.name
-        })
-    },
-    searchCommodity: function () {
     }
   }
 }

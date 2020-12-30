@@ -1,12 +1,11 @@
 <template>
   <h1>桃饱网 <span>企业</span>  </h1>
-  <div id="navlight"></div>
   <p id="all"> <strong>修改企业信息</strong></p>
   <hr>
   <div id="comSignUp">
     <p class="first" style="margin-top: 120px"><span>*</span>基本信息</p>
     <p class="sec">
-      <span>用户名</span><input type="text" placeholder="会员名" v-model="businessRegisterVo.username" size="default">
+      <span>用户名</span><input type="text" v-model="businessRegisterVo.username">
     </p>
     <p class="sec">
       <span>姓</span><input type="text" v-model="businessRegisterVo.lastname">
@@ -15,31 +14,31 @@
       <span>名</span><input type="text" v-model="businessRegisterVo.firstname">
     </p>
     <p class="sec">
-      <span>身份证号码</span><input type="text" placeholder="请输入身份证号码" v-model="businessRegisterVo.idCard">
+      <span>身份证号码</span><input type="text" v-model="businessRegisterVo.idCard">
     </p>
     <p class="sec">
-      <span>联系方式</span><input type="text" placeholder="请输入电话" v-model="businessRegisterVo.phone">
+      <span>联系方式</span><input type="text" v-model="businessRegisterVo.phone">
     </p>
     <p class="first"><span>*</span>企业信息</p>
     <p class="sec">
-      <span>分类</span><input type="phone" placeholder="请输入企业类别" v-model="businessRegisterVo.classification">
+      <span>分类</span><input type="phone" v-model="businessRegisterVo.classification">
     </p>
     <p class="sec">
-      <span>企业名</span><input type="text" placeholder="请输入营业执照上的公司名称" v-model="businessRegisterVo.shopName">
+      <span>企业名</span><input type="text" v-model="businessRegisterVo.shopName">
     </p>
     <p class="first"> <span>*</span> 银行卡信息</p>
     <p class="sec">
-      <span>工商信息</span><input type="text" placeholder="请填写社会统一信用编码" v-model="businessRegisterVo.businessInformation">
+      <span>工商信息</span><input type="text" v-model="businessRegisterVo.businessInformation">
     </p>
     <p class="sec">
-      <span>银行卡号</span><input type="text" placeholder="请输入银行卡号" v-model="businessRegisterVo.bankCardNumber">
+      <span>银行卡号</span><input type="text" v-model="businessRegisterVo.bankCardNumber">
     </p>
     <p class="sec">
-      <span>余额</span><input type="text" placeholder="请输入你的银行卡余额" v-model="businessRegisterVo.balance">
+      <span>余额</span><input type="text" v-model="businessRegisterVo.balance">
     </p>
-    <p class="first"><span>*</span>请设置登录密码</p>
+    <p class="first"><span>*</span>重新设置登录密码</p>
     <p class="sec">
-      <span>密码</span><input type="text" placeholder="设置你的登录密码" v-model="businessRegisterVo.password">
+      <span>密码</span><input type="text" v-model="businessRegisterVo.password">
     </p>
   </div>
   <input type="button" @click="register" id="login" value="提  交">
@@ -53,7 +52,7 @@ export default {
   name: 'changecom',
   data () {
     return {
-      business: {
+      businessRegisterVo: {
         id: '',
         roleName: 'business',
         username: '',
@@ -70,26 +69,119 @@ export default {
     }
   },
   created () {
-    this.business.username = store.state.username
+    this.businessRegisterVo.username = store.state.username
     console.log(store.state.username)
-    axios.get('/api/business/username/' + this.business.username).then(response => {
+    axios.get('/api/' + this.businessRegisterVo.username).then(response => {
       const result = response.data
       console.log('返回值为')
       console.log(result)
-      this.business.id = result.id
-      this.business.shopName = result.shopName
-      this.business.businessInformation = result.businessInformation
-      this.business.phone = result.phone
-      this.business.classification = result.classification
+      this.businessRegisterVo.id = result.id
+      this.businessRegisterVo.shopName = result.shopName
+      this.businessRegisterVo.businessInformation = result.businessInformation
+      this.businessRegisterVo.phone = result.phone
+      this.businessRegisterVo.classification = result.classification
+      this.businessRegisterVo.idCard = result.idCard
+      this.businessRegisterVo.bankCardNumber = result.bankCardNumber
+      this.businessRegisterVo.password = result.password
     }).catch(error => {
       console.log(error)
     })
   },
   methods: {
+    register: function () {
+      this.axios({
+        method: 'post',
+        url: 'api/',
+        data: {
+          id: this.businessRegisterVo.id,
+          username: this.businessRegisterVo.username,
+          lastname: this.businessRegisterVo.lastname,
+          firstname: this.businessRegisterVo.firstname,
+          shopName: this.businessRegisterVo.shopName,
+          businessInformation: this.businessRegisterVo.businessInformation,
+          phone: this.businessRegisterVo.phone,
+          classification: this.businessRegisterVo.classification,
+          idCard: this.businessRegisterVo.idCard,
+          bankCardNumber: this.businessRegisterVo.bankCardNumber,
+          password: this.businessRegisterVo.password
+        },
+        headers: {
+          token: this.token // 将token放在请求头带到后端
+        }
+      }).then(res => {
+        if (res.data === '修改成功') {
+          alert('修改成功')
+          window.location.reload()
+        } else {
+          alert('修改失败，请重新尝试')
+        }
+      })
+    }
   }
 }
 </script>
 
 <style scoped>
-
+  h1{
+    position: absolute;
+    top:100px;
+    left:200px;
+    font-family: 幼圆;
+    font-size: 40px;
+    color: lightcoral;
+  }
+  h1 span{
+    font-size: 30px;
+    color:#41464b;
+  }
+  #nav a{
+    text-decoration: none;
+    font-size: 15px;
+    color: #41464b;
+    margin-right: 20px;
+  }
+  hr{
+    margin-left: 10%;
+    width:80%;
+    color:#987cb9;
+    SIZE:5px;
+    margin-top: 200px;
+  }
+  #all{
+    margin-top: 0px;
+    font-size:20px;
+    color: darkorange;
+    float:left;
+    margin-left: 250px;
+    display: inline-block;
+  }
+  .first{
+    font-size: 20px;
+    margin-right: 40%;
+  }
+  .first span{
+    color: lightcoral;
+  }
+  .sec{
+    color: #4f5050;
+  }
+  .sec input{
+    border:solid 1px #c4d0ff;
+    position: absolute;
+    left: 60%;
+  }
+  .sec span{
+  }
+  #login{
+    color:white;
+    width: 20%;
+    height: 10%;
+    display: block;
+    margin-top: 50px;
+    margin-left: 40%;
+    background-color: orangered;
+    border: none;
+    box-shadow: #1a1e21;
+    border-radius: 10px;
+  }
 </style>

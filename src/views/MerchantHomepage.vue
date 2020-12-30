@@ -263,13 +263,6 @@ export default {
     margin-left: 250px;
     display: inline-block;
   }
-  #count{
-    display: inline-block;
-    margin-top: 50px;
-    font-size: 10px;
-    float: right;
-    margin-right: 200px;
-  }
   hr{
     margin-left: 10%;
     width:80%;
