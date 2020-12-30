@@ -62,17 +62,16 @@ export default {
       searchString: '',
 
       customerRegisterVo: {
-        id: '',
         roleName: 'customer',
         username: '',
-
+        nickname: '',
         lastname: '',
         firstname: '',
         idCard: '',
         phone: '',
         email: '',
-        nickname: '',
         bankCardNumber: '',
+        balance: '',
         password: ''
       }
     }
@@ -81,10 +80,11 @@ export default {
     this.customerRegisterVo.username = store.state.username
     axios.get('/api/').then(
       response => {
-        this.customerRegisterVo.username = response.data.username,
-        this.customerRegisterVo.nickname = response.data.nickname,
-        this.customerRegisterVo.lastname = response.data.lastname
-        // firstname: this.customerRegisterVo.firstname,
+        const result = response.data
+        this.customerRegisterVo.username = result.username
+        this.customerRegisterVo.nickname = result.nickname
+        this.customerRegisterVo.lastname = result.lastname
+        this.customerRegisterVo.firstname = result.firstname
         // idCard: this.customerRegisterVo.idCard,
         // phone: this.customerRegisterVo.phone,
         // email: this.customerRegisterVo.email,
@@ -133,11 +133,6 @@ export default {
 </script>
 
 <style scoped>
-  #logo {
-  height: 64px;
-  /*background-color: white;*/
-  margin: 32px;
-}
 h1{
   position: absolute;
   top:100px;
@@ -165,11 +160,6 @@ h1 span{
     height: 50px;
     background-color: orangered;
   }
-#responsive-layout{
-  width: 80%;
-  margin-top: 150px;
-  margin-left: 200px;
-}
   hr{
     margin-left: 10%;
     width:80%;
@@ -185,7 +175,33 @@ h1 span{
     margin-left: 250px;
     display: inline-block;
   }
-#responsive-layout #search {
-
+  .first{
+    font-size: 20px;
+    margin-right: 40%;
+  }
+.first span{
+  color: lightcoral;
+}
+.sec{
+  color: #4f5050;
+}
+.sec input{
+  border:solid 1px #c4d0ff;
+  position: absolute;
+  left: 60%;
+}
+.sec span{
+}
+#login{
+  color:white;
+  width: 20%;
+  height: 10%;
+  display: block;
+  margin-top: 50px;
+  margin-left: 40%;
+  background-color: orangered;
+  border: none;
+  box-shadow: #1a1e21;
+  border-radius: 10px;
 }
 </style>

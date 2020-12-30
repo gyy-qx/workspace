@@ -119,7 +119,7 @@ export default {
   }
   .first{
     font-size: 20px;
-    margin-right: 300px;
+    margin-right: 40%;
   }
   .first span{
     color: lightcoral;
@@ -130,18 +130,17 @@ export default {
   .sec input{
     border:solid 1px #c4d0ff;
     position: absolute;
-    left: 700px;
-    margin-left: 300px;
+    left: 60%;
   }
   .sec span{
   }
   #login{
     color:white;
-    width: 450px;
-    height: 45px;
+    width: 20%;
+    height: 10%;
     display: block;
     margin-top: 50px;
-    margin-left: 725px;
+    margin-left: 40%;
     background-color: orangered;
     border: none;
     box-shadow: #1a1e21;
