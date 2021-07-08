@@ -27,7 +27,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr v-for="(commodity,index) in commodities" :key="index" class="tr2">
+    <tr v-for="(commodity,index) in list" :key="index" class="tr2">
       <td class="exceptcheck"><input type="text" class="commodity" v-model="commodity.id" readonly="true"></td>
       <td class="exceptcheck"><input type="text" id="commodityname" v-model="commodity.name" readonly="true"></td>
       <td class="exceptcheck"><input type="text" class="commodity" v-model="commodity.classifition" readonly="true">
@@ -65,7 +65,7 @@ export default {
   data: function () {
     return {
       totalPrice: 0,
-      commodities: null
+      commodities: null,
     }
   },
   created () {
